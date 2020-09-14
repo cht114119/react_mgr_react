@@ -1,0 +1,13 @@
+.sys-title{
+    line-height:20px;
+    padding-bottom:20px;
+    margin-bottom: $basicMargin;
+    border-bottom: 1px solid $borderColor;
+    & > strong{
+        line-height: 20px;
+        font-size: 20px;
+        font-weight: 600;
+        color:#555;
+        
+    }
+}
