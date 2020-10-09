@@ -21,10 +21,11 @@ class AddImageText extends Component {
     }
 
     componentDidMount() {
-        console.log('this--====>>>>>', this)
+        // console.log('this--====>>>>>', this)
         // console.log('当前页面ID是 ====>>>', this.props.location.query.id)  此种方式传参 刷新页面 参数会丢失
         // console.log('当前页面ID是 ====>>>', this.props.location.state.id) // 此种方式传参 刷新页面 参数会丢失
-        console.log('当前页面ID是 ====>>>', this.props.location.search) //! 此种方式传参 刷新页面 参数 不会丢失
+        console.log('当前页面ID是 ====>>>', this.props.location.search.split("?")[1]) //! 此种方式传参 刷新页面 参数 不会丢失
+        console.log('当前页面ID是 ====>>>', this.props.location.search.replace("?",'')) //! 此种方式传参 刷新页面 参数 不会丢失
     }
     async getImageTextList() {
         try {
@@ -56,14 +57,7 @@ class AddImageText extends Component {
     }
 
     render() {
-        return (
-            <div>
-                设置图文页面
-                <div>
-                    <Button>设置图文页面123 </Button>
-                </div>
-            </div>
-        )
+        return <div>设置图文页面</div>
     }
 }
 
