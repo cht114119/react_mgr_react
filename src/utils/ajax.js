@@ -19,7 +19,7 @@ let inspectionSign = (data) => {
     try {
         let sign = '';
         data.time = new Date().getTime();
-        Object.keys(data).sort().map(v => {
+        Object.keys(data).sort().forEach(v => {
             if (typeof data[v] === 'object') {
                 sign += JSON.stringify(data[v]);
             } else if (typeof data[v] !== 'undefined') {
@@ -53,7 +53,7 @@ service.interceptors.request.use(
     config => {
         //TODO !需要设置headers
         config.headers.common['Shidian-Auth-Token'] = authToken.getToken() + '';
-        if (config.method != "get") {
+        if (config.method.toString().toLocaleUpperCase() !== "GET") {
             config.data = inspectionSign(config.data);
         }
         return config
@@ -68,7 +68,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         for (let i = 0; i < requestList.length; i++) {
-            if (requestList[i] == response.config.url) {
+            if (requestList[i] === response.config.url) {
                 // 注意，不能保证500ms必定执行，详情请了解JS的异步机制
                 // setTimeout(function(){
                 //     requestList.splice(i,1)
@@ -97,11 +97,15 @@ service.interceptors.response.use(
         } else if (error.response) {
             switch (error.response.status) {
                 case 401:
-                // todo 需要跳到 401页面
-                window.location.href = window.location.origin + '#/401'
+                    // todo 需要跳到 401页面
+                    window.location.href = window.location.origin + '#/401'
+                    message.error(`服务器错误！错误代码：${error.response.status}`)
+                    break
                 case 403:
-                // todo 需要跳到 403页面
-                window.location.href = window.location.origin + '#/403'
+                    // todo 需要跳到 403页面
+                    window.location.href = window.location.origin + '#/403'
+                    message.error(`服务器错误！错误代码：${error.response.status}`)
+                    break
                 default:
                     message.error(`服务器错误！错误代码：${error.response.status}`)
             }

@@ -7,3 +7,4 @@ export const getMenuListApi = (data = {}) => axios({
     method: 'POST',
     data
 })
+

@@ -48,6 +48,14 @@ const authToken = {
     getUserName() {
         return Cookies.get('kt_userName')
     },
+    // 设置菜单列表
+    setMenuList(menuList) {
+        return localStorage.setItem('kt_menuList', JSON.stringify(menuList))
+    },
+    //获取菜单列表
+    getMenuList() {
+        return JSON.parse(localStorage.getItem('kt_menuList'))
+    }
 }
 
 export default authToken

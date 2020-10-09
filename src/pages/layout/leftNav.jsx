@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Layout, Menu } from 'antd'
 import { Link } from 'react-router-dom'
-
+import './leftNav.scss';
 class LeftNav extends Component {
     constructor(props) {
         super(props)
@@ -18,7 +18,7 @@ class LeftNav extends Component {
                     return (
                         <Menu.Item key={item.adminMenuId}>
                             {item.adminMenuName}
-                            <Link to={item.url}></Link>
+                            <Link to={item.url} />
                         </Menu.Item>
                     )
                 } else {
@@ -45,7 +45,7 @@ class LeftNav extends Component {
                     pre.push(
                         <Menu.Item key={item.adminMenuId}>
                             {item.adminMenuName}
-                            <Link to={item.url}></Link>
+                            <Link to={item.url} />
                         </Menu.Item>
                     )
                 } else {
@@ -66,7 +66,7 @@ class LeftNav extends Component {
     render() {
         const { Sider } = Layout
         return (
-            <div>
+            <div className="left-nav">
                 <Sider>
                     <Menu
                         theme="dark"

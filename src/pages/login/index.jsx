@@ -4,9 +4,8 @@ import { Redirect } from 'react-router-dom'
 import logoImg from 'assets/images/logo.jpg'
 import 'styles/login/index.scss'
 import { LoginApi } from '@/api/login'
-import { getMenuListApi } from 'api/home'
 import authToken from 'utils/auth'
-
+import { getMenuListApi } from 'api/home'
 const layout = {
     labelCol: { span: 4 },
     wrapperCol: { span: 18 },
@@ -23,7 +22,11 @@ class Login extends Component {
         }
         this.formRef = React.createRef()
     }
-
+    componentDidMount() {
+        this.setState({
+            isLogin: authToken.getToken() ? true : false,
+        })
+    }
     // 登录按钮
     async logInBtn() {
         try {
@@ -37,7 +40,7 @@ class Login extends Component {
                 this.Login(subData)
             }
         } catch (error) {
-            console.log('失败', error)
+            throw new Error(error)
         }
     }
 
@@ -50,6 +53,7 @@ class Login extends Component {
                     this.setState({
                         menuList: res.data.information,
                     })
+                    authToken.setMenuList(res.data.information)
                     this.props.history.push('/')
                 } else {
                     message.error(res.msg)
@@ -71,9 +75,9 @@ class Login extends Component {
                 message.success(res.msg)
                 authToken.setToken(res.token)
                 authToken.setUserName(res.data.information.userName)
+
                 this.getMenuList()
                 // this.props.history.push('/')
-
             } else {
                 this.setState({
                     sysMsg: res.msg,
@@ -118,14 +122,9 @@ class Login extends Component {
         return Promise.resolve()
     }
 
-    componentDidMount() {
-        this.setState({
-            isLogin: authToken.getToken() ? true : false,
-        })
-    }
     render() {
         if (this.state.isLogin) {
-            return <Redirect to="/"></Redirect>
+            return <Redirect to="/" />
         }
         return (
             <div className="sys-login">
@@ -195,7 +194,7 @@ class Login extends Component {
                     preload="auto"
                     loop
                     id="videoBg"
-                ></video>
+                />
             </div>
         )
     }

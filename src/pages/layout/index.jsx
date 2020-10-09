@@ -16,12 +16,14 @@ import TopHeader from 'pages/layout/topHeader'
 
 import Home from '@/pages/home'
 import OrderList from 'pages/order/orderList'
+import StaticRoute from './staticRoute'
 
 class LayoutContainer extends Component {
     constructor(props) {
         super(props)
         this.state = {
             menuList: [],
+            loading: true,
         }
     }
     componentWillMount() {
@@ -30,11 +32,12 @@ class LayoutContainer extends Component {
     async getMenuList() {
         try {
             const res = await getMenuListApi({})
-            console.log('菜单列表res', res)
+            // console.log('菜单列表res', res)
             if (res) {
                 if (res.code === 'A00000') {
                     this.setState({
                         menuList: res.data.information,
+                        loading: false,
                     })
                 } else {
                     message.error(res.msg)
@@ -44,18 +47,23 @@ class LayoutContainer extends Component {
             throw new Error(error)
         }
     }
+
     render() {
         const { Content } = Layout
         if (!authToken.getToken()) {
-            return <Redirect to="/login"></Redirect>
+            return <Redirect to="/login" />
         }
+        if (this.state.loading) {
+            return <div className="loading" />
+        }
+
         return (
             <div>
                 <Layout style={{ minHeight: '100vh' }}>
-                    <TopHeader></TopHeader>
+                    <TopHeader />
                     <Layout className="site-layout">
                         <HashRouter>
-                            <LeftNav menuList={this.state.menuList}></LeftNav>
+                            <LeftNav menuList={this.state.menuList} />
                             <Content style={{ margin: '0 16px' }}>
                                 <Breadcrumb> </Breadcrumb>
                                 <div
@@ -72,12 +80,18 @@ class LayoutContainer extends Component {
                                             path="/order/order"
                                             component={OrderList}
                                         />
-                                        <Redirect
-                                            exact
-                                            from="/"
-                                            to="/home"
-                                        ></Redirect>
-                                        <Redirect to="/404"></Redirect>
+                                        {/* {staticRouteList.map((item) => {
+                                            return (
+                                                <Route
+                                                    key={item.path}
+                                                    path={item.path}
+                                                    component={item.component}
+                                                />
+                                            )
+                                        })} */}
+                                        <StaticRoute />
+                                        <Redirect exact from="/" to="/home" />
+                                        <Redirect to="/404" />
                                     </Switch>
                                 </div>
                             </Content>
